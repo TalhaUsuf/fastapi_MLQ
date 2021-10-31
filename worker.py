@@ -4,7 +4,7 @@ from mlq.queue import MLQ
 mlq = MLQ('inference_app', 'localhost', 6379, 0)
 
 def simple_multiply(params_dict, *args):
-    return params_dict['images'] * 2
+    return params_dict['images']
 
 async def main():
     print("Running, waiting for messages.")

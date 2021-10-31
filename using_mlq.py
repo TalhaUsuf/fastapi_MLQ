@@ -90,18 +90,31 @@ async def get_result(id:str):
 async def get_inference(n_imgs : int):
     global IDS
     ids = []
-    for k in trange(100, total=100, desc="IMG. NO:", colour="green"):
+    _ = []
+    for k in trange(n_imgs, total=n_imgs, desc="IMG. NO:", colour="green"):
 
         job_id = mlq.post({'images': 1234})
 
         ids.append(job_id)
+
+
+    print(ids)
+    for mk in ids:
+        result = None
+        while not result:
+            time.sleep(0.1)
+            job = mlq.get_job(mk)
+            # retreive results in FIFO order , if ist item's results have not been calculated then result var. will be None
+            result = job['result'] # if not calculated then result will be None
+            _.append(result)
+            
 
     # set global variable
     IDS = ids
 
     print(IDS)
 
-    return {'msg': 'Processing, check back soon.', 'job_id': IDS}
+    return {'msg': 'Processing, check back soon.', 'job_id': ids, "results" : _}
 
 
 
